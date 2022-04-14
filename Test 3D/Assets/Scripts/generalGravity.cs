@@ -20,47 +20,43 @@ public class generalGravity : MonoBehaviour
         gravity = -9.81f;
         jumpForce = 5f;
         currentVelocity = 0f;
-        isJumping = false;
     }
 
-    public void ApplyGravity(CharacterController characterController, float currentVelocity)
+    public Vector3 ApplyGravity(CharacterController characterController, float currentVelocity)
     {
-        characterController.Move(characterController.transform.up * currentVelocity * Time.deltaTime);
+        // characterController.Move(characterController.transform.up * currentVelocity * Time.deltaTime);
+        return characterController.transform.up * currentVelocity * Time.deltaTime;
     }
 
     public void Jump(float currentVelocity, float jumpForce)
     {
         currentVelocity += jumpForce;
     }
-    
+
     public bool CheckForGround(GameObject groundCheck, LayerMask groundMask)
     {
         bool result = Physics.Raycast(groundCheck.transform.position, Vector3.down, 0.1f, groundMask);
         return result;
     }
 
-    public float SetVelocity(bool isGrounded, float currentVelocity)
+    public float SetVelocity(bool isGrounded, float currentVelocity, bool isJumping, float jumpForce)
     {
         float newVelocity = currentVelocity;
 
-        if (isGrounded)
+        if (isGrounded && isJumping)
         {
-            if (isJumping)
-            {
-                Jump(newVelocity, jumpForce);
-
-            } else
-            {
-                newVelocity = 0f;
-            
-            }
-        } else
+            Jump(currentVelocity, jumpForce);
+            print("Is jumping!");
+        }
+        else if (isGrounded)
         {
-            newVelocity += gravity * Time.deltaTime;
-        
+            newVelocity = 0f;
+        }
+        else
+        {
+            newVelocity += gravity;
         }
 
         return newVelocity;
     }
-
 }

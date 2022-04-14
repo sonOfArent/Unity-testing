@@ -11,22 +11,4 @@ public class playerGravity : generalGravity
 
     }
 
-    private void Start()
-    {
-        characterController = GetComponent<CharacterController>();
-
-    }
-
-    private void Update()
-    {
-        isGrounded = CheckForGround(groundCheck, groundMask);
-
-        currentVelocity = SetVelocity(isGrounded, currentVelocity);
-
-        ApplyGravity(characterController, currentVelocity);
-
-    }
-
-
-
 }
